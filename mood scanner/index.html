@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mood Scanner</title>
+  <style>
+    body { font-family: Arial; text-align: center; margin-top: 20px; }
+    video, canvas { border: 2px solid #444; border-radius: 8px; }
+    button { margin-top: 15px; padding: 10px 20px; font-size: 16px; cursor: pointer; }
+    #result { margin-top: 20px; font-family: monospace; }
+  </style>
+</head>
+<body>
+  <h2>Face Mood Scanner</h2>
+  <video id="video" width="400" height="300" autoplay></video>
+  <canvas id="canvas" width="400" height="300" style="display:none;"></canvas>
+  <br>
+  <button id="scanBtn">Scan Mood</button>
+  <div id="result"></div>
+
+  <script>
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const resultDiv = document.getElementById('result');
+    const scanBtn = document.getElementById('scanBtn');
+    const ctx = canvas.getContext('2d');
+
+    // Start webcam
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream => { video.srcObject = stream; })
+      .catch(err => alert("Camera access denied: " + err));
+
+    scanBtn.addEventListener("click", async () => {
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      canvas.toBlob(async (blob) => {
+        const formData = new FormData();
+        formData.append("file", blob, "face.jpg");
+
+        resultDiv.textContent = "Analyzing mood...";
+
+        try {
+          const response = await fetch("http://127.0.0.1:8000/scan_mood/", {
+            method: "POST",
+            body: formData
+          });
+          const data = await response.json();
+          resultDiv.textContent = JSON.stringify(data, null, 2);
+        } catch (e) {
+          resultDiv.textContent = "Error: " + e;
+        }
+      }, "image/jpeg", 0.9);
+    });
+  </script>
+</body>
+</html>

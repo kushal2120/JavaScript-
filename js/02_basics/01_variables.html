@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>variables</title>
+</head>
+
+<body>
+  <script>
+    let variable1 = 3;
+    console.log(variable1); //3
+
+    let calculation = 2 + 2;
+    console.log(calculation); //4
+    console.log(calculation + 2); //6
+    
+    let result = calculation + 2;
+    console.log(result); //6
+    
+    let message = 'hello';
+    console.log(message); //hello
+
+    variable1 = 5;
+    console.log(variable1); // value change to 5 (re-assingning value)
+    
+    variable1 = variable1 + 1;
+    console.log(variable1); //6 (take new assigned value)
+    
+    const variable2 = 4;// value cant be changes after (best practice to use const by default)
+    var variable3 = 6; //not used now bcs of some issue
+    let variable4 = 7; //used when we have to change any variable
+
+    console.log(typeof variable4); //number (show the type any variable)
+    console.log(typeof message);//string
+    
+    
+     
+    //cant use special character except $,_
+    //cant start with a number
+
+  </script>
+</body>
+
+</html>
